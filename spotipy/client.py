@@ -1,3 +1,28 @@
+
+הודעה חדשה מאת raz lifshitz  הצגה  התעלמותהודעה חדשה מאת raz lifshitz  הצגה  התעלמות
+
+דילוג לתוכן
+שימוש ב-Gmail עם קוראי מסך
+1 מתוך 1,365
+Fwd: client.py‏‏
+דואר נכנס
+
+raz lifshitz
+קבצים מצורפים
+16:33 (לפני דקה)
+אני
+
+
+---------- Forwarded message ---------
+מאת: Yuval Lifshitz <yuvalif@gmail.com>
+‪Date: יום ה׳, 13 באוק׳ 2022, 15:18‬
+Subject: client.py
+To: raz lifshitz <evilifi@gmail.com>
+
+
+
+
+אזור קבצים מצורפים
 # -*- coding: utf-8 -*-
 
 """ A simple and thin Python library for the Spotify Web API """
@@ -108,6 +133,7 @@ class Spotify(object):
         status_forcelist=None,
         retries=max_retries,
         status_retries=max_retries,
+        connect_retries=10,
         backoff_factor=0.3,
         language=None,
     ):
@@ -139,6 +165,8 @@ class Spotify(object):
             Total number of retries to allow
         :param status_retries:
             Number of times to retry on bad status codes
+        :param connect_retries:
+            Number of times to retry on connection issues
         :param backoff_factor:
             A backoff factor to apply between attempts after the second try
             See urllib3 https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html
@@ -157,6 +185,7 @@ class Spotify(object):
         self.backoff_factor = backoff_factor
         self.retries = retries
         self.status_retries = status_retries
+        self.connect_retries = connect_retries
         self.language = language
 
         if isinstance(requests_session, requests.Session):
@@ -192,8 +221,8 @@ class Spotify(object):
         self._session = requests.Session()
         retry = urllib3.Retry(
             total=self.retries,
-            connect=None,
-            read=False,
+            connect=self.connect_retries,
+            read=None,
             allowed_methods=frozenset(['GET', 'POST', 'PUT', 'DELETE']),
             status=self.status_retries,
             backoff_factor=self.backoff_factor,
@@ -1969,3 +1998,5 @@ class Spotify(object):
                 limit = total - count
 
         return results
+client.py
+מציג את client.py.
